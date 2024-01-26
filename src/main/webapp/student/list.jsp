@@ -32,7 +32,7 @@
                     <tbody>
                         <% for (Student s : (List<Student>) request.getAttribute("students")) { %>
                         <tr>
-                            <th scope="row"><%= s.id %></th>
+                            <td><%= s.id %></td>
                             <td><%= s.name %></td>
                             <td><%= s.email %></td>
                             <td><%= s.address %></td>

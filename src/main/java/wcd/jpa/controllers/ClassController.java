@@ -31,10 +31,27 @@ public class ClassController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            List<Class> list = session.createQuery("FROM Class ", Class.class).getResultList();
+            List<Class> list = session.createQuery("FROM Class", Class.class).getResultList();
             session.getTransaction().commit();
-            req.setAttribute("students", list);
+            req.setAttribute("class", list);
         }
         req.getRequestDispatcher("class/list.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String entityId = req.getParameter("id");
+        try (Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            Class cl = session.get(Class.class, Integer.parseInt(entityId));
+
+            if (cl != null) {
+                session.delete(cl);
+            }
+            session.getTransaction().commit();
+            resp.setStatus(200);
+        } catch (Exception e) {
+            resp.setStatus(403);
+        }
     }
 }

@@ -3,7 +3,7 @@ package wcd.jpa.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "classes")
+@Table(name = "class")
 public class Class {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
