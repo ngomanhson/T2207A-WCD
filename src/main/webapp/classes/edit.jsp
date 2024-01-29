@@ -1,4 +1,4 @@
-<%@ page import="wcd.jpa.entities.Class" %><%--
+<%@ page import="wcd.jpa.entities.Classes" %><%--
   Created by IntelliJ IDEA.
   User: ngomanhson
   Date: 26/01/2024
@@ -21,7 +21,7 @@
 
         <div class="row">
             <div class="col-4 mx-auto">
-                <% Class cl = (Class) request.getAttribute("class"); %>
+                <% Classes cl = (Classes) request.getAttribute("class"); %>
                 <form method="post" action="edit-class?id=<%= cl.getId() %>">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>

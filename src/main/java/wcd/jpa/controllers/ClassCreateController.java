@@ -1,7 +1,7 @@
 package wcd.jpa.controllers;
 
 import org.hibernate.Session;
-import wcd.jpa.entities.Class;
+import wcd.jpa.entities.Classes;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -26,12 +26,12 @@ public class ClassCreateController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("class/create.jsp").forward(req, resp);
+        req.getRequestDispatcher("classes/create.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Class cl = new Class();
+        Classes cl = new Classes();
         cl.setName(req.getParameter("name"));
         cl.setSemester(req.getParameter("semester"));
         cl.setRoom(req.getParameter("room"));

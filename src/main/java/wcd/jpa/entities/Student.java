@@ -1,18 +1,42 @@
 package wcd.jpa.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "students")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int id;
+    private int id;
+
     @Column(nullable = false)
-    public String name;
+    private String name;
+
     @Column(nullable = false, unique = true)
-    public String email;
-    public String address;
+    private String email;
+
+    private String address;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id")
+    private Classes classes;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "student_subjects",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id")
+    )
+    private List<Subjects> subjects;
+
+    public List<Subjects> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subjects> subjects) {
+        this.subjects = subjects;
+    }
 
     public int getId() {
         return id;
@@ -44,5 +68,13 @@ public class Student {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Classes getClasses() {
+        return classes;
+    }
+
+    public void setClasses(Classes classes) {
+        this.classes = classes;
     }
 }

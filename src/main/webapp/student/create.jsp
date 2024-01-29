@@ -1,4 +1,5 @@
-<%--
+<%@ page import="wcd.jpa.entities.Classes" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: ngomanhson
   Date: 22/01/2024
@@ -20,7 +21,7 @@
 
         <div class="row">
             <div class="col-4 mx-auto">
-                <form action="student-create" method="post">
+                <form action="create-student" method="post">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <input type="text" name="name" class="form-control" id="name">
@@ -32,6 +33,16 @@
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
                         <input type="text" name="address" class="form-control" id="address">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="class_id" class="form-label">Class</label>
+                        <select name="class_id" id="class_id" class="form-select mb-3" aria-label=".form-select">
+                            <option selected>Select class</option>
+                            <% for (Classes c : (List<Classes>) request.getAttribute("classes")) { %>
+                            <option value="<%= c.getId() %>"><%= c.getName() %></option>
+                            <% } %>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Create Student</button>
                 </form>

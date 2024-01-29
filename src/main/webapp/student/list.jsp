@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
-<%@ page import="wcd.jpa.entities.Student" %><%--
+<%@ page import="wcd.jpa.entities.Student" %>
+<%@ page import="wcd.jpa.entities.Subjects" %><%--
   Created by IntelliJ IDEA.
   User: ngomanhson
   Date: 22/01/2024
@@ -26,16 +27,26 @@
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Address</th>
+                            <th scope="col">Class</th>
+                            <th scope="col">Subject</th>
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% for (Student s : (List<Student>) request.getAttribute("students")) { %>
                         <tr>
-                            <td><%= s.id %></td>
-                            <td><%= s.name %></td>
-                            <td><%= s.email %></td>
-                            <td><%= s.address %></td>
+                            <td><%= s.getId() %></td>
+                            <td><%= s.getName() %></td>
+                            <td><%= s.getEmail() %></td>
+                            <td><%= s.getAddress() %></td>
+                            <td><%= s.getClasses().getName() %></td>
+                            <td>
+                                <ul>
+                                    <% for (Subjects j: s.getSubjects()){ %>
+                                    <li><%= j.getName() %></li>
+                                    <% }%>
+                                </ul>
+                            </td>
                         <td>
                             <a href="edit-student?id=<%= s.getId() %>" class="btn btn-primary">
                                 <i class="fa-solid fa-pen"></i>

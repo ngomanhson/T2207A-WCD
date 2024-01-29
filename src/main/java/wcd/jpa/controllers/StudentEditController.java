@@ -26,17 +26,19 @@ public class StudentEditController extends HelloServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
         String entityId = req.getParameter("id");
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()){
             session.beginTransaction();
-            Student student = session.get(Student.class,Integer.parseInt(entityId));
+            Student student = session.get(Student.class, Integer.parseInt(entityId));
             session.getTransaction().commit();
-            if(student != null) {
+
+            if (student != null) {
                 req.setAttribute("student", student);
-                req.getRequestDispatcher("student/edit.jsp").forward(req, resp);
-            }else
+                req.getRequestDispatcher("/student/edit.jsp").forward(req,  resp);
+            } else
                 resp.setStatus(404);
-        }catch (Exception e){
+        } catch (Exception e) {
             resp.setStatus(404);
         }
     }

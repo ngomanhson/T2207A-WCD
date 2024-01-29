@@ -1,6 +1,7 @@
 package wcd.jpa.controllers;
 
 import org.hibernate.Session;
+import wcd.jpa.entities.Classes;
 import wcd.jpa.entities.Student;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(value = "/create-student")
 public class StudentCreateController extends HttpServlet {
@@ -26,6 +28,13 @@ public class StudentCreateController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try(Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            List<Classes> classes = session.createQuery("FROM Classes", Classes.class)
+                    .getResultList();
+            session.getTransaction().commit();
+            req.setAttribute("classes", classes);
+        }
         req.getRequestDispatcher("student/create.jsp").forward(req, resp);
     }
 
@@ -35,8 +44,14 @@ public class StudentCreateController extends HttpServlet {
         student.setName(req.getParameter("name"));
         student.setEmail(req.getParameter("email"));
         student.setAddress(req.getParameter("address"));
-        try (Session session = sessionFactory.openSession()){
+        String classId = req.getParameter("class_id");
+        try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
+            Classes cl = session.get(Classes.class, Integer.parseInt(classId));
+            if (cl == null) {
+                return;
+            }
+            student.setClasses(cl);
             session.save(student);
             session.getTransaction().commit();
         }

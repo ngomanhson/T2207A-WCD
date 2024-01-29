@@ -1,22 +1,25 @@
 package wcd.jpa.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "class")
-public class Class {
+@Table(name = "classes")
+public class Classes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int id;
+    private int id;
 
     @Column(nullable = false, unique = true)
-    public String name;
+    private String name;
 
     @Column(nullable = false, unique = true)
-    public String semester;
+    private String semester;
 
     @Column(nullable = false)
-    public String room;
+    private String room;
+    @OneToMany(mappedBy = "classes")
+    private List<Student> students;
 
     public int getId() {
         return id;
@@ -48,5 +51,13 @@ public class Class {
 
     public void setRoom(String room) {
         this.room = room;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 }

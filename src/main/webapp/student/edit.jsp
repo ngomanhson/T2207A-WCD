@@ -34,6 +34,7 @@
                         <label for="address" class="form-label">Address</label>
                         <input type="text" name="address" class="form-control" id="address" value="<%= student.getAddress()%>">
                     </div>
+
                     <button type="submit" class="btn btn-primary w-100">Save Change</button>
                 </form>
             </div>

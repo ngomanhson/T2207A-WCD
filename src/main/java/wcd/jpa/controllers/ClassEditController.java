@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import wcd.jpa.entities.Class;
+import wcd.jpa.entities.Classes;
 
 import java.io.IOException;
 
@@ -29,11 +29,11 @@ public class ClassEditController extends HelloServlet {
         String entityId = req.getParameter("id");
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Class cl = session.get(Class.class,Integer.parseInt(entityId));
+            Classes cl = session.get(Classes.class,Integer.parseInt(entityId));
             session.getTransaction().commit();
             if(cl != null) {
                 req.setAttribute("class", cl);
-                req.getRequestDispatcher("class/edit.jsp").forward(req, resp);
+                req.getRequestDispatcher("classes/edit.jsp").forward(req, resp);
             }else
                 resp.setStatus(404);
         }catch (Exception e){
@@ -46,7 +46,7 @@ public class ClassEditController extends HelloServlet {
         String entityId = req.getParameter("id");
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Class cl = session.get(Class.class,Integer.parseInt(entityId));
+            Classes cl = session.get(Classes.class,Integer.parseInt(entityId));
             if(cl != null) {
                 cl.setName(req.getParameter("name"));
                 cl.setSemester(req.getParameter("semester"));

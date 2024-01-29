@@ -1,4 +1,4 @@
-<%@ page import="wcd.jpa.entities.Class" %>
+<%@ page import="wcd.jpa.entities.Classes" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: ngomanhson
@@ -26,16 +26,18 @@
                         <th scope="col">Name</th>
                         <th scope="col">Semester</th>
                         <th scope="col">Room</th>
+                        <th scope="col">Students</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Class c : (List<Class>) request.getAttribute("class")) { %>
+                    <% for (Classes c : (List<Classes>) request.getAttribute("classes")) { %>
                     <tr>
-                        <td><%= c.id %></td>
-                        <td><%= c.name %></td>
-                        <td><%= c.semester %></td>
-                        <td><%= c.room %></td>
+                        <td><%= c.getId() %></td>
+                        <td><%= c.getName() %></td>
+                        <td><%= c.getSemester() %></td>
+                        <td><%= c.getRoom() %></td>
+                        <td><%= c.getStudents().size() %></td>
                         <td>
                             <a href="edit-class?id=<%= c.getId() %>" class="btn btn-primary">
                                 <i class="fa-solid fa-pen"></i>
