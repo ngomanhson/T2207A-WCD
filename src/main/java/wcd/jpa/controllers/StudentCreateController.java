@@ -1,5 +1,6 @@
 package wcd.jpa.controllers;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import wcd.jpa.entities.Classes;
 import wcd.jpa.entities.Student;
@@ -10,9 +11,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import wcd.jpa.entities.Subjects;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet(value = "/create-student")
 public class StudentCreateController extends HttpServlet {
@@ -28,12 +33,15 @@ public class StudentCreateController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Classes> classesList = new ArrayList<>();
+        List<Subjects> subjectsList = new ArrayList<>();
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            List<Classes> classes = session.createQuery("FROM Classes", Classes.class)
-                    .getResultList();
+            classesList = session.createQuery("FROM Classes", Classes.class).getResultList();
+            subjectsList = session.createQuery("FROM Subjects", Subjects.class).getResultList();
             session.getTransaction().commit();
-            req.setAttribute("classes", classes);
+            req.setAttribute("classes", classesList);
+            req.setAttribute("subjects", subjectsList);
         }
         req.getRequestDispatcher("student/create.jsp").forward(req, resp);
     }
@@ -44,14 +52,21 @@ public class StudentCreateController extends HttpServlet {
         student.setName(req.getParameter("name"));
         student.setEmail(req.getParameter("email"));
         student.setAddress(req.getParameter("address"));
-        String classId = req.getParameter("class_id");
+
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            Classes cl = session.get(Classes.class, Integer.parseInt(classId));
-            if (cl == null) {
-                return;
-            }
-            student.setClasses(cl);
+            // Find Classes
+            int classID = Integer.parseInt(req.getParameter("class_id"));
+            Classes c = session.find(Classes.class,classID);
+            student.setClasses(c);
+            // Find subjects
+            List<Integer> s_ids = Arrays.stream(req.getParameterValues("subject_id[]"))
+                    .map(Integer::parseInt).collect(Collectors.toList());
+            Query<Subjects> query = session.createQuery("FROM Subjects WHERE id IN (:ids)", Subjects.class);
+            query.setParameter("ids", s_ids);
+            List<Subjects> subjects = query.getResultList();
+            student.setSubjects(subjects);
+
             session.save(student);
             session.getTransaction().commit();
         }

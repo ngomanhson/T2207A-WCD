@@ -1,5 +1,6 @@
 <%@ page import="wcd.jpa.entities.Classes" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="wcd.jpa.entities.Subjects" %><%--
   Created by IntelliJ IDEA.
   User: ngomanhson
   Date: 22/01/2024
@@ -43,6 +44,18 @@
                             <option value="<%= c.getId() %>"><%= c.getName() %></option>
                             <% } %>
                         </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="class_id" class="form-label">Subjects</label>
+                        <% for (Subjects s : (List<Subjects>) request.getAttribute("subjects")) { %>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input name="subject_id[]" class="form-check-input" type="checkbox" value="<%= s.getId()%>">
+                                    <%= s.getName()%>
+                                </label>
+                            </div>
+                        <% } %>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Create Student</button>
                 </form>
