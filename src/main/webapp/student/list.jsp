@@ -54,6 +54,9 @@
                             <a onclick="deleteStudent(<%= s.getId() %>)" href="javascript:void(0)" class="btn btn-danger">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
+                            <a onclick="likeStudent(<%= s.getId() %>)" href="javascript:void(0)" class="btn btn-secondary">
+                                <i class="fa-solid fa-heart"></i>
+                            </a>
                         </td>
                         <% } %>
                     </tbody>
@@ -70,13 +73,28 @@
            fetch(url, {
                method: 'DELETE'
            }).then(rs=> {
-               if (confirm("Delete Successfully. Reload page?"))
+               if (confirm("Delete successfully. Reload page?"))
                    window.location.reload();
            }).error(err=> {
                alert(err);
            })
        }
    }
+
+   function likeStudent(id) {
+       if (confirm("Are you sure?")){
+           var url = `list-student?id=`+id;
+           fetch(url, {
+               method: 'POST'
+           }).then(rs=> {
+               if (confirm("Like student successfully. Reload page?"))
+                   window.location.reload();
+           }).error(err=> {
+               alert(err);
+           })
+       }
+   }
+
 </script>
 </body>
 </html>
