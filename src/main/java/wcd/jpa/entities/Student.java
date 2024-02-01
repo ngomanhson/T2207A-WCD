@@ -16,6 +16,7 @@ public class Student {
     @Column(nullable = false, unique = true)
     private String email;
 
+    private String password;
     private String address;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -68,6 +69,14 @@ public class Student {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Classes getClasses() {

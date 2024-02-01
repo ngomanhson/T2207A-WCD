@@ -60,5 +60,4 @@ public class ClassEditController extends HelloServlet {
             resp.setStatus(500);
         }
     }
-
 }
