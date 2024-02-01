@@ -52,6 +52,7 @@
         </div>
     </div>
 </section>
+<jsp:include page="/layout/js.jsp"/>
 <script type="text/javascript">
     function likeStudent(id) {
         if (confirm("Are you sure?")){
