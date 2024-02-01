@@ -1,5 +1,7 @@
 package wcd.jpa.controllers;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import wcd.jpa.entities.Classes;
@@ -13,13 +15,17 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import wcd.jpa.entities.Subjects;
 
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Transport;
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -104,9 +110,23 @@ public class StudentCreateController extends HttpServlet {
                 Message message = new MimeMessage(mailSession);
                 message.setFrom(new InternetAddress(senderEmail));
                 message.setRecipient(Message.RecipientType.TO,
-                        new InternetAddress("ngomanhson2004txpt@gmail.com"));
+                        new InternetAddress(student.getEmail()));
                 message.setSubject("Create new a student!");
-                message.setText("<h1>This is a test email</h1>");
+
+                // Set Content mail as HTML
+                req.setAttribute("student", student);
+                RequestDispatcher dispatcher = req.getRequestDispatcher("mails/email.jsp");
+                StringWriter stringWriter = new StringWriter();
+                PrintWriter writer = new PrintWriter(stringWriter);
+                HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper(resp){
+                    public PrintWriter getWriter(){
+                        return writer;
+                    }
+                };
+
+                dispatcher.include(req,wrapper);
+                String content = stringWriter.toString();
+                message.setContent(content,"text/html");
 
                 // Send mail
                 Transport.send(message);
@@ -116,4 +136,8 @@ public class StudentCreateController extends HttpServlet {
         }
         resp.sendRedirect("list-student");
     }
+
+
+
 }
+
